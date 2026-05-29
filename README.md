@@ -1,13 +1,13 @@
 # AI Agentic YouTube Comment Sentiment Analysis System
 
-**🔴 Live Streamlit Dashboard:** [Insert Your Streamlit Cloud Link Here]
+** Live Streamlit Dashboard:** [Insert Your Streamlit Cloud Link Here]
 
-## 📖 Project Overview
+## Project Overview
 This project is an advanced, fully autonomous **Agentic ETL (Extract, Transform, Load) Pipeline** designed to ingest YouTube data, ensure relational database integrity, and perform deep-learning sentiment analysis. 
 
 Instead of relying on hardcoded scraping scripts, this architecture utilizes a **Hugging Face CodeAgent** powered by the `Qwen2.5-Coder` Large Language Model. The Agent acts as an orchestrator, dynamically selecting the appropriate Python tools to extract data from YouTube Channels, Playlists, or Single Videos, safely loading them into a PostgreSQL database, and triggering a RoBERTa-based Machine Learning model to evaluate public sentiment.
 
-## ✨ Core Features
+## Core Features
 * **Agentic Orchestration:** The system dynamically routes instructions based on user input, chaining tools together to handle complex multi-step data extractions autonomously.
 * **Relational Data Integrity:** Implements defensive database writing. It automatically constructs "dummy" parent records (e.g., for standalone videos) to satisfy strict Foreign Key constraints in PostgreSQL without dropping data.
 * **Lazy-Loaded Machine Learning:** The 500MB RoBERTa Transformer model is lazy-loaded into memory only upon explicit user request, ensuring the UI boots instantly (under 1 second) even on resource-constrained cloud servers.
@@ -58,10 +58,10 @@ The codebase is highly modular, separating the User Interface, AI Orchestration,
 
 ---
 
-## ⚙️ Installation & Local Setup
+## Installation & Local Setup
 
 ### Prerequisites
-* Python 3.10+
+* Python 3.11+
 * PostgreSQL installed and running locally.
 * Google Cloud Console account (for YouTube Data API Key).
 * Hugging Face account (for Inference API Token).
@@ -69,5 +69,5 @@ The codebase is highly modular, separating the User Interface, AI Orchestration,
 ### Step-by-Step Guide
 1. **Clone the Repository:**
    ```bash
-   git clone [https://github.com/YOUR_USERNAME/YOUR_REPO_NAME.git](https://github.com/YOUR_USERNAME/YOUR_REPO_NAME.git)
-   cd YOUR_REPO_NAME
+   git clone [https://github.com/Haswin03/AI-Agentic-YouTube-Comment-Sentiment-Analysis-and-SQL-Reporting-System.git](https://github.com/Haswin03/AI-Agentic-YouTube-Comment-Sentiment-Analysis-and-SQL-Reporting-System.gitt)
+   cd Haswin03/AI-Agentic-YouTube-Comment-Sentiment-Analysis-and-SQL-Reporting-System
