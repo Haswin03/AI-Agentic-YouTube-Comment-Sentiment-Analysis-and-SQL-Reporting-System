@@ -80,8 +80,8 @@ def fetch_comments(video_id: str, limit: int = 20) -> list:
                 'like_count': int(snippet.get('likeCount', 0)),
                 'published_at': snippet.get('publishedAt')
             })
-    except Exception:
-        pass
+    except Exception as e:
+        print(f"API Error fetching comments: {e}")
     return comments
 
 def fetch_playlist_videos(playlist_id: str, limit: int = 10) -> list:
@@ -89,6 +89,7 @@ def fetch_playlist_videos(playlist_id: str, limit: int = 10) -> list:
         playlist_req = youtube.playlistItems().list(part="snippet,contentDetails", playlistId=playlist_id, maxResults=limit)
         playlist_res = playlist_req.execute()
     except Exception:
+        print(f"CRITICAL: Failed to fetch playlist {playlist_id}. Error: {str(e)}")
         return []
 
     raw_video_ids = [item["contentDetails"]["videoId"] for item in playlist_res.get("items", [])]
@@ -110,3 +111,45 @@ def fetch_playlist_videos(playlist_id: str, limit: int = 10) -> list:
             "comment_count": int(item["statistics"].get("commentCount", 0))
         })
     return valid_videos
+
+def fetch_single_video_details(video_id: str) -> dict:
+    try:
+        req = youtube.videos().list(part="snippet,statistics", id=video_id)
+        res = req.execute()
+        if not res.get("items"): return {}
+        
+        item = res["items"][0]
+        return {
+            "video_id": item["id"],
+            "channel_id": item["snippet"]["channelId"],
+            "video_title": item["snippet"]["title"],
+            "channel_title": item["snippet"]["channelTitle"], # We get the channel name for free!
+            "published_at": item["snippet"]["publishedAt"],
+            "view_count": int(item["statistics"].get("viewCount", 0)),
+            "like_count": int(item["statistics"].get("likeCount", 0)),
+            "comment_count": int(item["statistics"].get("commentCount", 0))
+        }
+    except Exception as e:
+        print(f"API Error fetching video details: {e}")
+        return {}
+    
+def fetch_video_details(video_id: str) -> dict:
+    try:
+        req = youtube.videos().list(part="snippet,statistics", id=video_id)
+        res = req.execute()
+        if not res.get("items"): return {}
+        
+        item = res["items"][0]
+        return {
+            "video_id": item["id"],
+            "channel_id": item["snippet"]["channelId"],
+            "video_title": item["snippet"]["title"],
+            "channel_title": item["snippet"]["channelTitle"],
+            "published_at": item["snippet"]["publishedAt"],
+            "view_count": int(item["statistics"].get("viewCount", 0)),
+            "like_count": int(item["statistics"].get("likeCount", 0)),
+            "comment_count": int(item["statistics"].get("commentCount", 0))
+        }
+    except Exception as e:
+        print(f"API Error fetching video details: {e}")
+        return {}

@@ -1,6 +1,6 @@
 import os
 from dotenv import load_dotenv
-from sqlalchemy import create_engine, Column, String, Integer, DateTime, Float, ForeignKey
+from sqlalchemy import create_engine, Column, String, Integer, DateTime, Float, ForeignKey, Text
 from sqlalchemy.orm import declarative_base, relationship
 
 load_dotenv()
@@ -43,7 +43,7 @@ class Comment(Base):
     comment_id = Column(String(100), primary_key=True)
     video_id = Column(String(50), ForeignKey('videos.video_id', ondelete="CASCADE"), nullable=False)
     author_name = Column(String(255))
-    comment_text = Column(String(4000))
+    comment_text = Column(Text, nullable=False)
     like_count = Column(Integer, default=0)
     published_at = Column(DateTime)
     sentiment_label = Column(String(20), nullable=True)

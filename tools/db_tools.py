@@ -75,6 +75,7 @@ def save_videos_to_db(videos_data: list) -> str:
         return f"Saved {len(videos_data)} videos."
     except Exception as e:
         session.rollback()
+        print(f"\nCRITICAL DB ERROR SAVING VIDEOS: {str(e)}\n")
         return f"Error: {str(e)}"
     finally:
         session.close()
@@ -90,11 +91,15 @@ def save_comments_to_db(comments_data: list) -> str:
     session = SessionLocal()
     try:
         for c in comments_data:
+            # DEFENSIVE PRE-PROCESSING: Get text string and slice it to prevent StringDataRightTruncation errors
+            raw_text = c.get('comment_text', '')
+            safe_text = raw_text[:3990] if raw_text else ''
+
             comment_record = Comment(
                 comment_id=c['comment_id'],
                 video_id=c['video_id'],
                 author_name=c.get('author_name', 'Unknown'),
-                comment_text=c.get('comment_text', ''),
+                comment_text=safe_text, # Use the safe truncated string here
                 like_count=c.get('like_count', 0),
                 published_at=_parse_iso_date(c.get('published_at'))
             )
@@ -103,6 +108,7 @@ def save_comments_to_db(comments_data: list) -> str:
         return f"Saved {len(comments_data)} comments."
     except Exception as e:
         session.rollback()
+        print(f"\nCRITICAL DB ERROR SAVING COMMENTS: {str(e)}\n") # Fixed print string label typo as well
         return f"Error: {str(e)}"
     finally:
         session.close()

@@ -15,13 +15,11 @@ DB_NAME = os.getenv("DB_NAME")
 DATABASE_URL = f"postgresql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
 engine = create_engine(DATABASE_URL)
 
-# Keep these completely empty at startup so app.py boots instantly
 _sentiment_analyzer = None
 
 def _get_analyzer():
     global _sentiment_analyzer
     if _sentiment_analyzer is None:
-        # Crucial: Heavy imports are hidden inside the function call
         import torch
         from transformers import pipeline
         
@@ -53,7 +51,6 @@ def analyze_unscored_comments(batch_limit: int = 100) -> str:
     Args:
         batch_limit: Maximum number of comments to process in this run.
     """
-    # The model only loads now when the tool is explicitly fired!
     analyzer = _get_analyzer()
     label_map = {
         'positive': 'Positive',
