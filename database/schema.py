@@ -1,17 +1,9 @@
 import os
-from dotenv import load_dotenv
 from sqlalchemy import create_engine, Column, String, Integer, DateTime, Float, ForeignKey, Text
 from sqlalchemy.orm import declarative_base, relationship
 
-load_dotenv()
-DB_USER = os.getenv("DB_USER", "postgres")
-DB_PASSWORD = os.getenv("DB_PASSWORD", "TARS")
-DB_HOST = os.getenv("DB_HOST", "localhost")
-DB_PORT = os.getenv("DB_PORT", "5432")
-DB_NAME = os.getenv("DB_NAME", "youtube_sentiment_db")
-
-DATABASE_URL = f"postgresql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
-engine = create_engine(DATABASE_URL)
+DATABASE_URL = "sqlite:///youtube_sentiment.db"
+engine = create_engine(DATABASE_URL, connect_args={"check_same_thread": False})
 Base = declarative_base()
 
 class Channel(Base):

@@ -1,20 +1,12 @@
 import os
 from datetime import datetime
-from dotenv import load_dotenv
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from smolagents import tool
 from database.schema import Channel, Video, Comment
 
-load_dotenv()
-DB_USER = os.getenv("DB_USER")
-DB_PASSWORD = os.getenv("DB_PASSWORD")
-DB_HOST = os.getenv("DB_HOST")
-DB_PORT = os.getenv("DB_PORT")
-DB_NAME = os.getenv("DB_NAME")
-
-DATABASE_URL = f"postgresql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
-engine = create_engine(DATABASE_URL)
+DATABASE_URL = "sqlite:///youtube_sentiment.db"
+engine = create_engine(DATABASE_URL, connect_args={"check_same_thread": False})
 SessionLocal = sessionmaker(bind=engine)
 
 def _parse_iso_date(date_str: str):
@@ -99,9 +91,11 @@ def save_comments_to_db(comments_data: list) -> str:
                 comment_id=c['comment_id'],
                 video_id=c['video_id'],
                 author_name=c.get('author_name', 'Unknown'),
-                comment_text=safe_text, # Use the safe truncated string here
+                comment_text=safe_text,
                 like_count=c.get('like_count', 0),
-                published_at=_parse_iso_date(c.get('published_at'))
+                published_at=_parse_iso_date(c.get('published_at')),
+                sentiment_label=c.get('sentiment_label'),
+                sentiment_score=c.get('sentiment_score')
             )
             session.merge(comment_record)
         session.commit()

@@ -123,7 +123,7 @@ def fetch_single_video_details(video_id: str) -> dict:
             "video_id": item["id"],
             "channel_id": item["snippet"]["channelId"],
             "video_title": item["snippet"]["title"],
-            "channel_title": item["snippet"]["channelTitle"], # We get the channel name for free!
+            "channel_title": item["snippet"]["channelTitle"],
             "published_at": item["snippet"]["publishedAt"],
             "view_count": int(item["statistics"].get("viewCount", 0)),
             "like_count": int(item["statistics"].get("likeCount", 0)),

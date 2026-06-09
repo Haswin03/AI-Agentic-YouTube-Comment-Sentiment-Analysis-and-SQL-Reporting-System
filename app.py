@@ -8,18 +8,8 @@ from sqlalchemy import create_engine, text
 from tools.input_router import route_input
 from pipeline.reporter import generate_all_reports, ensure_export_dir
 
-DB_USER = os.getenv("DB_USER")
-DB_PASSWORD = os.getenv("DB_PASSWORD")
-DB_HOST = os.getenv("DB_HOST")
-DB_PORT = os.getenv("DB_PORT")
-DB_NAME = os.getenv("DB_NAME")
-
-if not all([DB_USER, DB_PASSWORD, DB_HOST, DB_PORT, DB_NAME]):
-    st.error("Security Alert: Database environment variables are missing.")
-    st.stop()
-
-DATABASE_URL = f"postgresql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
-engine = create_engine(DATABASE_URL)
+DATABASE_URL = "sqlite:///youtube_sentiment.db"
+engine = create_engine(DATABASE_URL, connect_args={"check_same_thread": False})
 
 st.set_page_config(page_title="Agentic YouTube Sentiment Dashboard", layout="wide")
 
