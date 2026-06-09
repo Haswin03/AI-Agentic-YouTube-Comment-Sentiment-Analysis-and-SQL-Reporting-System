@@ -4,12 +4,14 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 from sqlalchemy import create_engine, text
+from database.schema import Base
 
 from tools.input_router import route_input
 from pipeline.reporter import generate_all_reports, ensure_export_dir
 
 DATABASE_URL = "sqlite:///youtube_sentiment.db"
 engine = create_engine(DATABASE_URL, connect_args={"check_same_thread": False})
+Base.metadata.create_all(engine)
 
 st.set_page_config(page_title="Agentic YouTube Sentiment Dashboard", layout="wide")
 
